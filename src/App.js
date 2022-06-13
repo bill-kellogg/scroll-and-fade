@@ -1,60 +1,44 @@
 import React from 'react'
 import { Box, colors, Container, Grid, styled, Typography } from '@mui/material'
 
-let productHeight = 800
+let productHeight = 1200
 
 const sections = [
   {
     color: {
-      r: 220,
-      g: 190,
-      b: 135,
+      r: 252,
+      g: 215,
+      b: 74,
       a: 0
     },
     top: 0,
     muiFontColor: colors.grey[900],
-    heading: "Heading 1",
-    imagePath: "https://c.o0bg.com/rf/image_1200w/Boston/2011-2020/2018/12/11/BostonGlobe.com/ReceivedContent/Images/KREITER12112018ChildrensHoliday1.jpg",
-    copy: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+    heading: "For Breakfast",
+    copy: "If I'm feeling healthy, I'll grab a banana. 🍌"
   },
   {
     color: {
-      r: 195,
-      g: 0,
-      b: 145,
+      r: 207,
+      g: 125,
+      b: 43,
       a: 1
     },
     muiFontColor: colors.grey[300],
     top: window.innerHeight,
-    heading: "Heading 2",
-    imagePath: "https://c.o0bg.com/rf/image_1200w/Boston/2011-2020/2019/08/24/BostonGlobe.com/Metro/Images/tlumackicaribbeanparade022.jpg",
-    copy: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+    heading: "At Lunch",
+    copy: "What's better than a big sandwich? 🥪"
   },
   {
     color: {
-      r: 165,
-      g: 95,
-      b: 25,
+      r: 229,
+      g: 190,
+      b: 110,
       a: 1
     },
     muiFontColor: colors.grey[900],
     top: window.innerHeight + 1 * productHeight,
-    heading: "Heading 3",
-    imagePath: "https://c.o0bg.com/rf/image_1200w/Boston/2011-2020/2018/10/11/BostonGlobe.com/Metro/Images/ryan_fallcolors2_met.jpg",
-    copy: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-  },
-  {
-    color: {
-      r: 50,
-      g: 90,
-      b: 160,
-      a: 1
-    },
-    muiFontColor: colors.grey[400],
-    top: window.innerHeight + 2 * productHeight,
-    heading: "Heading 4",
-    imagePath: "https://c.o0bg.com/rf/image_1200w/Boston/2011-2020/2019/03/07/BostonGlobe.com/Metro/Images/tlumackiicecastle340-2.jpg",
-    copy: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+    heading: "For Dinner",
+    copy: "If it's cold out, let's try the new ramen place! 🍜"
   }
 ]
 
@@ -79,7 +63,7 @@ const ContentBlock = ({ section, index }) => {
   
   const StyledGridContainer = styled(Grid)(({theme}) => ({
     background: 'transparent',
-    height: '800px',
+    height: '1200px',
     [theme.breakpoints.up('md')]: {
       flexDirection: flexDirection,
     },
@@ -91,16 +75,11 @@ const ContentBlock = ({ section, index }) => {
 
   return (
     <StyledGridContainer container spacing={2} alignItems="center">
-      <Grid item sm={12} md={6}>
+      <Grid item xs={12}>
         <Box>
-          <Typography variant="h3" style={{ color: muiFontColor }}>{ heading }</Typography>
-          <Typography variant="body1" style={{ color: muiFontColor }} fontSize="18px">
-              { copy }
-          </Typography>
+          <Typography variant="subtitle1" style={{ color: muiFontColor, fontSize: '100px' }} align="center">{ heading }</Typography>
+          <Typography variant="body1" style={{ color: muiFontColor, fontSize: '60px' }} align="center">{ copy }</Typography>
         </Box>
-      </Grid>
-      <Grid item sm={12} md={6}>
-        <StyledImg alt="pic of the week" src={ imagePath } />
       </Grid>
     </StyledGridContainer>
   )
@@ -108,7 +87,7 @@ const ContentBlock = ({ section, index }) => {
 
 function App() {
 
-  const FixedBg = styled(Box)(() => ({
+  const FixedBg = styled(Box)((theme) => ({
     position: 'fixed',
     width: '100%',
     top: 0,
