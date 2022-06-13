@@ -1,44 +1,60 @@
 import React from 'react'
-import './App.css'
+import { Box, colors, Container, Grid, styled, Typography } from '@mui/material'
 
-let productHeight = 1000
+let productHeight = 800
 
 const sections = [
   {
     color: {
-      r: 255,
-      g: 255,
-      b: 255,
+      r: 220,
+      g: 190,
+      b: 135,
       a: 0
     },
-    top: 0
+    top: 0,
+    muiFontColor: colors.grey[900],
+    heading: "Heading 1",
+    imagePath: "https://c.o0bg.com/rf/image_1200w/Boston/2011-2020/2018/12/11/BostonGlobe.com/ReceivedContent/Images/KREITER12112018ChildrensHoliday1.jpg",
+    copy: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
   },
   {
     color: {
-      r: 218,
-      g: 165,
-      b: 32,
+      r: 195,
+      g: 0,
+      b: 145,
       a: 1
     },
-    top: window.innerHeight
+    muiFontColor: colors.grey[300],
+    top: window.innerHeight,
+    heading: "Heading 2",
+    imagePath: "https://c.o0bg.com/rf/image_1200w/Boston/2011-2020/2019/08/24/BostonGlobe.com/Metro/Images/tlumackicaribbeanparade022.jpg",
+    copy: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
   },
   {
     color: {
-      r: 255,
-      g: 105,
-      b: 180,
+      r: 165,
+      g: 95,
+      b: 25,
       a: 1
     },
-    top: window.innerHeight + 1 * productHeight
+    muiFontColor: colors.grey[900],
+    top: window.innerHeight + 1 * productHeight,
+    heading: "Heading 3",
+    imagePath: "https://c.o0bg.com/rf/image_1200w/Boston/2011-2020/2018/10/11/BostonGlobe.com/Metro/Images/ryan_fallcolors2_met.jpg",
+    copy: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
   },
   {
     color: {
-      r: 238,
-      g: 130,
-      b: 238,
+      r: 50,
+      g: 90,
+      b: 160,
       a: 1
     },
-    top: window.innerHeight + 2 * productHeight
+    muiFontColor: colors.grey[400],
+    top: window.innerHeight + 2 * productHeight,
+    heading: "Heading 4",
+    imagePath: "https://c.o0bg.com/rf/image_1200w/Boston/2011-2020/2019/03/07/BostonGlobe.com/Metro/Images/tlumackiicecastle340-2.jpg",
+    copy: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
   }
 ]
 
@@ -55,17 +71,67 @@ function blend(c1, c2, fraction) {
   }
 }
 
-const ContentBlock = ({ contentNum }) => {
-  return <div className="slide">Content Block {contentNum}</div>
+const ContentBlock = ({ section, index }) => {
+  
+  const { heading, imagePath, copy, muiFontColor } = section
+  
+  const flexDirection = index % 2 === 0 ? 'initial' : 'row-reverse'
+  
+  const StyledGridContainer = styled(Grid)(({theme}) => ({
+    background: 'transparent',
+    height: '800px',
+    [theme.breakpoints.up('md')]: {
+      flexDirection: flexDirection,
+    },
+  }))
+
+  const StyledImg = styled('img')(() => ({
+    width: '100%'
+  }))
+
+  return (
+    <StyledGridContainer container spacing={2} alignItems="center">
+      <Grid item sm={12} md={6}>
+        <Box>
+          <Typography variant="h3" style={{ color: muiFontColor }}>{ heading }</Typography>
+          <Typography variant="body1" style={{ color: muiFontColor }} fontSize="18px">
+              { copy }
+          </Typography>
+        </Box>
+      </Grid>
+      <Grid item sm={12} md={6}>
+        <StyledImg alt="pic of the week" src={ imagePath } />
+      </Grid>
+    </StyledGridContainer>
+  )
 }
 
 function App() {
+
+  const FixedBg = styled(Box)(() => ({
+    position: 'fixed',
+    width: '100%',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    zIndex: -1
+  }))
+
   const bgScrollRef = React.useRef(null)
   const rafRef = React.useRef(null)
 
   React.useEffect(() => {
     let scrollY = window.scrollY
     const step = () => {
+      
+      let el = bgScrollRef.current
+      
+      // use first slide color values on load
+      if (window.scrollY === 0) {
+        el.style.backgroundColor = `rgb(${sections[0].color.r}, ${sections[0].color.g}, ${sections[0].color.b})`
+      }
+
       // If the scroll position is not changing, don't bother with calculations
       // and DOM updates
       if (window.scrollY === scrollY) {    
@@ -105,7 +171,6 @@ function App() {
         color = blend(sections[prev].color, sections[active].color, fraction)
       }
 
-      let el = bgScrollRef.current
       el.style.backgroundColor = `rgb(${color.r}, ${color.g}, ${color.b})`
 
       rafRef.current = requestAnimationFrame(step)
@@ -113,15 +178,18 @@ function App() {
 
     rafRef.current = requestAnimationFrame(step)
   }, [bgScrollRef, rafRef])
-
+  
   return (
-    <div className="App">
-      <div ref={bgScrollRef} className="bg" />
-      <ContentBlock contentNum="1" />
-      <ContentBlock contentNum="2" />
-      <ContentBlock contentNum="3" />
-      <ContentBlock contentNum="4" />
-    </div>
+    <Container>
+      <FixedBg ref={bgScrollRef}/>
+      {
+        sections.map( (section, index) => {
+          return (
+            <ContentBlock key={index} section={section} index={index} />
+          )
+        })
+      }
+    </Container>
   )
 }
 
